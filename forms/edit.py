@@ -13,7 +13,7 @@ class UserEditForm(StyledModelForm):
             'first_name',
             'last_name',
             'email',
-            # Add bio and image fields
-            'bio',
-            'image'
+            # Uncomment following lines
+            # 'bio',
+            # 'image'
         )
