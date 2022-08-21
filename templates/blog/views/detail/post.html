@@ -1,0 +1,49 @@
+{% extends 'blog/base/base_site.html' %}
+{% load i18n %}
+{% block title %}{% translate 'Post Details' %}{% endblock %}
+{% block content %}
+    <h1 class="display-1 text-center mb-4">
+        {{ post.title }}
+    </h1>
+    <p class="text-muted d-flex flex-column flex-lg-row gap-4 align-items-center justify-content-between">
+        {% translate 'Posted' %} {{ post.created_at|timesince }} {% translate 'ago' %}
+        {% if post.created_at != post.updated_at %}
+            <span class="badge bg-warning">
+                {% translate 'Updated' %}: {{ post.updated_at|timesince }} {% translate 'ago' %}
+            </span>
+        {% endif %}
+    </p>
+    <div class="row mt-3 mb-5 g-4">
+        <div class="col-12 col-md-4">
+            <div class="card rounded-3 shadow">
+                {% if post.user.image %}
+                    <img src="{% url 'blog:user_image' post.user.id %}" alt="{{ post.user }}" class="card-img-top">
+                {% endif %}
+                <div class="card-body">
+                    <h2 class="display-6 card-title text-center">
+                        {{ post.user.get_full_name }}
+                    </h2>
+                    <span class="badge bg-primary">
+                        {% translate 'Author' %}
+                    </span>
+                    {% if post.user.bio %}
+                        <p class="card-text">
+                            {{ post.user.bio }}
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="card card-body lead shadow">
+                {% if post.image %}
+                    <figure>
+                        <img src="{% url 'blog:post_image' post.id %}" alt="{{ post.title }}" class="card-img">
+                        <figcaption class="text-center">{{ post.title }}</figcaption>
+                    </figure>
+                {% endif %}
+                {{ post.content|linebreaks }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'blog/authentication/base.html' %}
+{% load i18n %}
+{% block title %}{% translate 'Password Reset Confirmation' %}{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'blog:profile' %}">
+            {% translate 'Profile' %}
+        </a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{% url 'blog:reset_password' %}">
+            {% translate 'Password Reset' %}
+        </a>
+    </li>
+    <li class="breadcrumb-item">
+        {% translate 'Confirm' %}
+    </li>
+{% endblock %}
+{% block content %}
+    {% if validlink %}
+        <h1 class="display-1">
+            {% translate 'Password Reset Confirm' %}
+        </h1>
+        <p>
+            {% translate "Please enter your new password twice so we can verify you typed it in correctly." %}
+        </p>
+        {% include 'blog/includes/utilties/form.html' with form_tag=1 method='post' floating_labels=1 %}
+        {% url 'blog:profile' as url %}
+        {% include 'blog/includes/utilties/submit.html' with reset=1 cancel_url=url %}
+    {% else %}
+        <h1 class="display-1">
+            {% translate 'The password reset link was invalid!' %}
+        </h1>
+        <p class="alert alert-danger">
+            {% blocktranslate %}
+                The password reset link was invalid, possibly because it has already been used. Please request a new
+                password reset.
+            {% endblocktranslate %}
+        </p>
+        <a class="btn btn-lg btn-primary" href="{% url 'blog:reset_password' %}">
+            {% translate 'Request Password Reset' %}
+        </a>
+    {% endif %}
+{% endblock %}

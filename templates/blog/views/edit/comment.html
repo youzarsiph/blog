@@ -1,0 +1,14 @@
+{% extends 'blog/views/edit/template.html' %}
+{% load i18n %}
+{% block title %}{% translate 'Edit comment' %}{% endblock %}
+{% block breadcrumb_item %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'blog:dashboard' %}">
+            {% translate 'Posts' %}
+        </a>
+    </li>
+    <li class="breadcrumb-item">
+        {{ comment }}
+    </li>
+{% endblock %}
+{% block page_title %}{% translate 'Edit comment' %}{% endblock %}

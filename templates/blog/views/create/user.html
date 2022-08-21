@@ -1,0 +1,16 @@
+{% extends 'blog/base/base_site.html' %}
+{% load i18n %}
+{% block title %}{% translate 'Register' %}{% endblock %}
+{% block content %}
+    <h1 class="display-1 mb-4">
+        {% translate 'Register' %}
+    </h1>
+    {% include 'blog/includes/utilties/form.html' with form_tag=1 floating_labels=1 %}
+    {% include 'blog/includes/utilties/submit.html' with reset=1 %}
+    <small class="text-muted">
+        {% translate 'Alredy have an account?' %}
+        <a href="{% url 'blog:login' %}">
+            {% translate 'Login' %}
+        </a>
+    </small>
+{% endblock %}

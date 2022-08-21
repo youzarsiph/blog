@@ -1,0 +1,19 @@
+{% extends 'blog/base/dashboard.html' %}
+{% load i18n %}
+{% block title %}{% translate 'Edit ' %}{% endblock %}
+{% block breadcrumb %}
+    {% block breadcrumb_item %}{% endblock %}
+    <li class="breadcrumb-item active">
+        <i class="bi bi-pencil"></i>
+        {% translate 'Edit' %}
+    </li>
+{% endblock %}
+{% block content %}
+    <h1 class="display-1">
+        {% block page_title %}{% translate 'Create' %}{% endblock %}
+    </h1>
+    {% include 'blog/includes/utilties/form.html' with form_tag=1 method='post' floating_labels=1 enctype_multipart=1 %}
+    {% block submit %}
+        {% include 'blog/includes/utilties/save_submit.html' with reset=1 %}
+    {% endblock %}
+{% endblock %}

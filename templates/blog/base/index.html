@@ -1,0 +1,23 @@
+{% extends 'blog/base/base_site.html' %}
+{% load i18n %}
+{% block title %}{% translate 'Home' %}{% endblock %}
+{% block main %}
+    <div class="container pt-4">
+        <div class="container-fluid">
+            <h1 class="display-1">
+                {% translate 'Blog' %}
+            </h1>
+            <h2>
+                {% translate 'Reusable blog app written in python and django' %}
+            </h2>
+            <p class="lead fs-4">
+                {% blocktranslate %}
+                    You can use this app for free, it's available on Github for more information read the
+                    <a href="https://github.com/youzarsiph/blog#readme">
+                        README.md
+                    </a>
+                {% endblocktranslate %}
+            </p>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'blog/base/dashboard.html' %}
+{% load i18n %}
+{% block title %}{% translate 'Edit account' %}{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'blog:profile' %}">
+            {% translate 'Profile' %}
+        </a>
+    </li>
+    <li class="breadcrumb-item active">
+        {% translate 'Edit' %}
+    </li>
+{% endblock %}
+{% block content %}
+    <h1 class="display-1">
+        {% translate 'Edit account' %}
+    </h1>
+    {% include 'blog/includes/utilties/form.html' with form_tag=1 method='post' floating_labels=1 enctype_multipart=1 %}
+    {% url 'blog:profile' as url %}
+    {% url 'blog:delete_user' request.user.id as uri %}
+    {% include 'blog/includes/utilties/save_submit.html' with form_id='form' reset=1 delete=1 cancel_url=url delete_url=uri %}
+{% endblock %}

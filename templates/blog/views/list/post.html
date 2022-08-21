@@ -1,0 +1,24 @@
+{% extends 'blog/base/base_site.html' %}
+{% load i18n %}
+{% block title %}{% translate 'Posts' %}{% endblock %}
+{% block content %}
+    <h1 class="display-1">
+        {% translate 'Posts' %}
+    </h1>
+    <div class="row g-4 my-5">
+        {% for post in post_list %}
+            <div class="col-12 col-md-6 col-lg-4">
+                {% include 'blog/includes/components/post.html' %}
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <h2 class="display-2">
+                    {% translate 'Be the first who posts' %}
+                </h2>
+                <a href="{% url 'blog:create_post' %}" class="btn btn-lg btn-primary">
+                    {% translate 'New post' %}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

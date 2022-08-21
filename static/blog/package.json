@@ -1,0 +1,27 @@
+{
+  "name": "j-app",
+  "version": "1.0.0",
+  "description": "JApp UI",
+  "main": "styles.css",
+  "dependencies": {
+    "bootstrap": "^5.1.3",
+    "bootstrap-icons": "^1.8.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo 'Hello World';"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youzarsiph/JApp.git"
+  },
+  "keywords": [
+    "Bootstrap"
+  ],
+  "author": "youzarsiph",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/youzarsiph/JApp/issues"
+  },
+  "homepage": "https://github.com/youzarsiph/JApp#readme"
+}
