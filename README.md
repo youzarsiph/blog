@@ -55,6 +55,8 @@ Run the server:
 python manage.py runserver
 ```
 
+# Blog's User Model
+
 Blog uses Django's default user model by default, but it comes with its own custom user model. If you want to use Blog's
 user model follow this steps:
 
