@@ -33,7 +33,7 @@
                     <span class="d-none">
                         {% translate 'Post' %}
                     </span>
-                    <i class="bi bi-send"></i>
+                    <i class="bi bi-send mx-2"></i>
                 </button>
             </div>
             <small class="text-muted">
@@ -49,7 +49,7 @@
             <div class="d-flex flex-column gap-2">
                 <span>{{ post.user.get_full_name }}</span>
                 <small class="text-muted">
-                    {{ post.created_at|timesince }}
+                    {{ post.created_at|date }}
                 </small>
             </div>
             {% if post.user == request.user %}

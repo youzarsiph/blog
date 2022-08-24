@@ -25,4 +25,6 @@ class PostCreationView(UserRequiredMixin, MessageRequiredCreationView):
 class CommentCreationView(UserRequiredMixin, MessageRequiredCreationView):
     model = Comment
     form_class = CommentCreationForm
-    success_url = reverse_lazy('blog:post_list')
+
+    def get_success_url(self):
+        return reverse_lazy('blog:post_detail', args=[self.object.post.id])
