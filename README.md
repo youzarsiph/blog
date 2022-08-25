@@ -31,7 +31,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-Include `urls.py` from the JApp, in `mysite/urls.py`:
+Include blog's `urls.py`, in `mysite/urls.py`:
 
 ```python
 from django.contrib import admin
