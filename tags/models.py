@@ -1,0 +1,37 @@
+""" Data Models for blog.tags """
+
+from django.db import models
+
+
+# Create your models here.
+class Tag(models.Model):
+    """Article Tags"""
+
+    name = models.CharField(
+        max_length=32,
+        unique=True,
+        db_index=True,
+        help_text="Topic Name",
+    )
+    color = models.CharField(
+        max_length=8,
+        unique=True,
+        db_index=True,
+        help_text="Tag color",
+    )
+    description = models.CharField(
+        max_length=256,
+        db_index=True,
+        help_text="Topic Description",
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        help_text="Last update",
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        help_text="Date created",
+    )
+
+    def __str__(self) -> str:
+        return self.name
