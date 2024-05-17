@@ -41,6 +41,18 @@ class Article(models.Model):
         related_name="articles",
         help_text="Article tags",
     )
+    reactions = models.ManyToManyField(
+        User,
+        related_name="reactions",
+        through="reactions.Reaction",
+        help_text="Article reactions",
+    )
+    comments = models.ManyToManyField(
+        User,
+        related_name="comments",
+        through="comments.Comment",
+        help_text="Article comments",
+    )
     updated_at = models.DateTimeField(
         auto_now=True,
         help_text="Last update",
@@ -49,6 +61,24 @@ class Article(models.Model):
         auto_now_add=True,
         help_text="Date published",
     )
+
+    @property
+    def comment_count(self) -> int:
+        """Number of comments of an article"""
+
+        return self.comments.count()
+
+    @property
+    def reaction_count(self) -> int:
+        """Number of reactions of an article"""
+
+        return self.reactions.count()
+
+    @property
+    def tag_count(self) -> int:
+        """Number of tags of an article"""
+
+        return self.tags.count()
 
     def __str__(self) -> str:
         return self.title

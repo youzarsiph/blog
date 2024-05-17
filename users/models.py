@@ -17,7 +17,7 @@ class User(AbstractUser):
     cover = models.ImageField(
         null=True,
         blank=True,
-        help_text="User photo",
+        help_text="User cover",
         upload_to="blog/images/covers/",
     )
     bio = models.CharField(
@@ -25,4 +25,9 @@ class User(AbstractUser):
         null=True,
         blank=True,
         help_text="User bio",
+    )
+    followers = models.ManyToManyField(
+        "self",
+        through="followers.Follower",
+        help_text="User followers",
     )

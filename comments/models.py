@@ -14,13 +14,11 @@ class Comment(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="comments",
         help_text="Comment Owner",
     )
     article = models.ForeignKey(
         "articles.Article",
         on_delete=models.CASCADE,
-        related_name="comments",
         help_text="Commented Article",
     )
     text = models.TextField(

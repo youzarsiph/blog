@@ -7,16 +7,29 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Follower',
+            name="Follower",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('updated_at', models.DateTimeField(auto_now=True, help_text='Last update')),
-                ('created_at', models.DateTimeField(auto_now_add=True, help_text='Date followed')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, help_text="Last update"),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, help_text="Date followed"),
+                ),
             ],
         ),
     ]

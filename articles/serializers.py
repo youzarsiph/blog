@@ -21,7 +21,9 @@ class ArticleSerializer(ModelSerializer):
             "title",
             "content",
             "is_pinned",
-            "tags",
+            "comment_count",
+            "reaction_count",
+            "tag_count",
             "created_at",
             "updated_at",
         ]

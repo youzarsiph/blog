@@ -6,7 +6,7 @@ from blog.mixins import OwnerMixin
 from blog.articles.models import Article
 from blog.comments.models import Comment
 from blog.comments.serializers import CommentSerializer
-from blog.permissions import IsReadOnly
+from blog.permissions import IsListOnly, IsReadOnly
 
 
 # Create your views here.
@@ -24,6 +24,8 @@ class CommentViewSet(OwnerMixin, ModelViewSet):
 class ArticleCommentsViewSet(CommentViewSet):
     """Comments of an article"""
 
+    filterset_fields = ["user", "created_at"]
+
     def perform_create(self, serializer):
         """Perform comment creation"""
 
@@ -40,9 +42,10 @@ class ArticleCommentsViewSet(CommentViewSet):
 class UserCommentsViewSet(CommentViewSet):
     """Comments of a user"""
 
-    permission_classes = [IsAuthenticated, IsReadOnly]
+    filterset_fields = ["article", "created_at"]
+    permission_classes = [IsAuthenticated, IsReadOnly, IsListOnly]
 
     def get_queryset(self):
-        """Filter queryset by user"""
+        """Filter queryset by request.user"""
 
         return super().get_queryset().filter(user=self.request.user)

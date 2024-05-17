@@ -10,18 +10,24 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('reactions', '0001_initial'),
+        ("reactions", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='reaction',
-            name='user',
-            field=models.ForeignKey(help_text='User', on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="reaction",
+            name="user",
+            field=models.ForeignKey(
+                help_text="User",
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddConstraint(
-            model_name='reaction',
-            constraint=models.UniqueConstraint(fields=('user', 'article'), name='unique_reaction'),
+            model_name="reaction",
+            constraint=models.UniqueConstraint(
+                fields=("user", "article"), name="unique_reaction"
+            ),
         ),
     ]

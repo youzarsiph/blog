@@ -11,7 +11,7 @@ class Tag(models.Model):
         max_length=32,
         unique=True,
         db_index=True,
-        help_text="Topic Name",
+        help_text="Tag Name",
     )
     color = models.CharField(
         max_length=8,
@@ -32,6 +32,12 @@ class Tag(models.Model):
         auto_now_add=True,
         help_text="Date created",
     )
+
+    @property
+    def article_count(self) -> int:
+        """Number of articles of a tag"""
+
+        return self.articles.count()
 
     def __str__(self) -> str:
         return self.name

@@ -11,16 +11,15 @@ User = get_user_model()
 class Follower(models.Model):
     """Followers"""
 
-    from_user = models.OneToOneField(
+    from_user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE,
         related_name="following",
+        on_delete=models.CASCADE,
         help_text="Follower",
     )
-    to_user = models.OneToOneField(
+    to_user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="followers",
         help_text="Followed",
     )
     updated_at = models.DateTimeField(

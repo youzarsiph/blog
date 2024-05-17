@@ -18,6 +18,7 @@ class TagSerializer(ModelSerializer):
             "name",
             "color",
             "description",
+            "article_count",
             "created_at",
             "updated_at",
         ]

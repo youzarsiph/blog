@@ -29,3 +29,21 @@ class IsReadOnly(BasePermission):
         """Check request.method"""
 
         return request.method in SAFE_METHODS
+
+
+class IsListOnly(BasePermission):
+    """Allow access only to list action"""
+
+    def has_permission(self, request, view):
+        """Allow access to list action"""
+
+        return view.action == "list"
+
+
+class DenyAll(BasePermission):
+    """Deny all access"""
+
+    def has_permission(self, request, view):
+        """Deny all"""
+
+        return False

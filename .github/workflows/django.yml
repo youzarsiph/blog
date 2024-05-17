@@ -43,8 +43,15 @@ jobs:
         run: |
           echo "urlpatterns += [path("", include("blog.urls"))]" >> project/urls.py
 
-      - name: Run Tests
+      - name: Run Check
         run: |
           cd project
           python manage.py check
+
+      - name: Run Migrations
+        run: |
+          python manage.py migrate
+
+      - name: Run Tests
+        run: |
           python manage.py test

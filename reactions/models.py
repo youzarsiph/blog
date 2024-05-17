@@ -23,6 +23,7 @@ class Reaction(models.Model):
     )
     value = models.CharField(
         max_length=8,
+        default="👍🏻",
         help_text="Reaction",
         choices=[
             ("👍🏻", "👍🏻"),

@@ -7,19 +7,50 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Tag',
+            name="Tag",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(db_index=True, help_text='Topic Name', max_length=32, unique=True)),
-                ('color', models.CharField(db_index=True, help_text='Tag color', max_length=8, unique=True)),
-                ('description', models.CharField(db_index=True, help_text='Topic Description', max_length=256)),
-                ('updated_at', models.DateTimeField(auto_now=True, help_text='Last update')),
-                ('created_at', models.DateTimeField(auto_now_add=True, help_text='Date created')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        db_index=True,
+                        help_text="Topic Name",
+                        max_length=32,
+                        unique=True,
+                    ),
+                ),
+                (
+                    "color",
+                    models.CharField(
+                        db_index=True, help_text="Tag color", max_length=8, unique=True
+                    ),
+                ),
+                (
+                    "description",
+                    models.CharField(
+                        db_index=True, help_text="Topic Description", max_length=256
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, help_text="Last update"),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, help_text="Date created"),
+                ),
             ],
         ),
     ]
