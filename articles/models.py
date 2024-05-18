@@ -38,6 +38,7 @@ class Article(models.Model):
     )
     tags = models.ManyToManyField(
         "tags.Tag",
+        blank=True,
         related_name="articles",
         help_text="Article tags",
     )

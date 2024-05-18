@@ -27,6 +27,7 @@ class Comment(models.Model):
     )
     replies = models.ManyToManyField(
         "self",
+        symmetrical=False,
         help_text="Comment Replies",
     )
     updated_at = models.DateTimeField(

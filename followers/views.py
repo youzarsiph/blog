@@ -44,7 +44,7 @@ class UserFollowersViewSet(FollowerViewSet):
 
 
 class UserFollowingsViewSet(FollowerViewSet):
-    """Followings of a user"""
+    """Users followed by a user"""
 
     filterset_fields = ["to_user"]
 

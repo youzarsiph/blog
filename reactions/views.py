@@ -3,7 +3,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from blog.mixins import OwnerMixin
-from blog.articles.models import Article
 from blog.permissions import IsListOnly, IsReadOnly
 from blog.reactions.models import Reaction
 from blog.reactions.serializers import ReactionSerializer
@@ -27,14 +26,12 @@ class ArticleReactionsViewSet(ReactionViewSet):
     def perform_create(self, serializer):
         """Creates a reaction"""
 
-        article = Article.objects.get(pk=self.kwargs["id"])
-        serializer.save(user=self.request.user, article=article)
+        serializer.save(user=self.request.user, article_id=self.kwargs["id"])
 
     def get_queryset(self):
         """Filter queryset by article"""
 
-        article = Article.objects.get(pk=self.kwargs["id"])
-        return super().get_queryset().filter(article=article)
+        return super().get_queryset().filter(article_id=self.kwargs["id"])
 
 
 class UserReactionsViewSet(ReactionViewSet):

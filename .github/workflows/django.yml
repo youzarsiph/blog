@@ -45,7 +45,6 @@ jobs:
 
       - name: Run Check
         run: |
-          cd project
           python manage.py check
 
       - name: Run Migrations

@@ -28,6 +28,13 @@ class User(AbstractUser):
     )
     followers = models.ManyToManyField(
         "self",
+        symmetrical=False,
         through="followers.Follower",
         help_text="User followers",
     )
+
+    @property
+    def follower_count(self) -> int:
+        """Number of followers of a user"""
+
+        return self.followers.count()

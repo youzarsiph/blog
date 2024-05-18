@@ -22,6 +22,7 @@ class UserSerializer(ModelSerializer):
             "first_name",
             "last_name",
             "bio",
+            "follower_count",
             "date_joined",
             "last_login",
         ]

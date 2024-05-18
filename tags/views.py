@@ -2,7 +2,6 @@
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from blog.articles.models import Article
 from blog.permissions import IsListOnly, IsReadOnly
 from blog.tags.models import Tag
 from blog.tags.serializers import TagSerializer
@@ -34,5 +33,4 @@ class ArticleTagsViewSet(TagViewSet):
     def get_queryset(self):
         """Filter queryset by article"""
 
-        article = Article.objects.get(id=self.kwargs["id"])
-        return super().get_queryset().filter(articles=article)
+        return super().get_queryset().filter(article_id=self.kwargs["id"])
