@@ -54,6 +54,11 @@ class Article(models.Model):
         through="comments.Comment",
         help_text="Article comments",
     )
+    stargazers = models.ManyToManyField(
+        User,
+        related_name="stargazers",
+        help_text="Article stargazers",
+    )
     updated_at = models.DateTimeField(
         auto_now=True,
         help_text="Last update",
@@ -80,6 +85,12 @@ class Article(models.Model):
         """Number of tags of an article"""
 
         return self.tags.count()
+
+    @property
+    def stars(self) -> int:
+        """Number of stars of an article"""
+
+        return self.stargazers.count()
 
     def __str__(self) -> str:
         return self.title

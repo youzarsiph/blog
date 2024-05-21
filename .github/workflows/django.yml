@@ -28,20 +28,25 @@ jobs:
 
       - name: Create Django Project
         run: |
-          python -m django startproject project
+          python -m django startproject mysite
 
-      - name: Copy blog to project
+      - name: Copy blog to mysite
         run: |
-          cd project
+          cd mysite
           git clone https://github.com/youzarsiph/blog
 
       - name: Add blog to INSTALLED_APPS
         run: |
-          echo "INSTALLED_APPS += ['blog', 'blog.articles', 'blog.comments', 'blog.followers', 'blog.reactions', 'blog.tags', 'blog.users', 'rest_framework']\nAUTH_USER_MODEL = 'users.User'" >> project/settings.py
+          echo "INSTALLED_APPS += ['blog', 'blog.articles', 'blog.comments', 'blog.followers', 'blog.reactions', 'blog.tags', 'blog.users', 'rest_framework']\nAUTH_USER_MODEL = 'users.User'" >> mysite/settings.py
 
-      - name: Add blog to project URLConf
+      - name: Add blog to mysite URLConf
         run: |
-          echo "urlpatterns += [path("", include("blog.urls"))]" >> project/urls.py
+          echo "urlpatterns += [path("", include("blog.urls"))]" >> mysite/urls.py
+
+      - name: Run ls and cwd
+        run: |
+          ls -la
+          cwd
 
       - name: Run Check
         run: |

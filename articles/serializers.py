@@ -22,6 +22,7 @@ class ArticleSerializer(ModelSerializer):
             "content",
             "is_pinned",
             "tags",
+            "stars",
             "comment_count",
             "reaction_count",
             "tag_count",

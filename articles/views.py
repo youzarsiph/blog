@@ -41,6 +41,44 @@ class ArticleViewSet(OwnerMixin, ModelViewSet):
 
         return Response({"details": message}, status=status.HTTP_200_OK)
 
+    @action(methods=["post"], detail=True)
+    def star(self, request: Request, pk: int) -> Response:
+        """React to an article"""
+
+        message: str
+        # Get article object
+        article = self.get_object()
+
+        if self.request.user not in article.stargazers.all():
+            article.stargazers.add(self.request.user)
+            message = f"{article} starred"
+
+        else:
+            article.stargazers.remove(self.request.user)
+            message = f"{article} un-starred"
+
+        return Response({"details": message}, status=status.HTTP_200_OK)
+
+    @action(methods=["get"], detail=False)
+    def starred(self, request: Request) -> Response:
+        """Starred articles"""
+
+        # Get queryset and filter
+        queryset = self.filter_queryset(self.get_queryset()).filter(
+            stargazers=request.user
+        )
+
+        # Paginate the queryset
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+
+        # Return the data
+        return Response(serializer.data)
+
 
 class TagArticlesViewSet(ArticleViewSet):
     """Articles of a tag"""
