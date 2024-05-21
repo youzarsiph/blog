@@ -21,7 +21,7 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         help_text="Commented Article",
     )
-    text = models.TextField(
+    content = models.TextField(
         db_index=True,
         help_text="Content",
     )

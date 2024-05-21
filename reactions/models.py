@@ -21,17 +21,17 @@ class Reaction(models.Model):
         on_delete=models.CASCADE,
         help_text="Article",
     )
-    value = models.CharField(
+    emoji = models.CharField(
         max_length=8,
         default="👍🏻",
         help_text="Reaction",
         choices=[
-            ("👍🏻", "👍🏻"),
-            ("❤️", "❤️"),
-            ("🤣", "🤣"),
-            ("😲", "😲"),
-            ("🤔", "🤔"),
-            ("😡", "😡"),
+            ("👍🏻", "👍🏻 Like"),
+            ("❤️", "❤️ Love"),
+            ("🤣", "🤣 Funny"),
+            ("😲", "😲 Wow"),
+            ("🤔", "🤔 Thinking"),
+            ("😡", "😡 Angry"),
         ],
     )
     #

@@ -18,7 +18,7 @@ class ReactionSerializer(ModelSerializer):
             "url",
             "user",
             "article",
-            "value",
+            "emoji",
             "created_at",
             "updated_at",
         ]

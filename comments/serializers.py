@@ -18,7 +18,7 @@ class CommentSerializer(ModelSerializer):
             "url",
             "user",
             "article",
-            "text",
+            "content",
             "replies",
             "created_at",
             "updated_at",
