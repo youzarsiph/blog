@@ -37,25 +37,25 @@ jobs:
 
       - name: Add blog to INSTALLED_APPS
         run: |
+          cd mysite
           echo "INSTALLED_APPS += ['blog', 'blog.articles', 'blog.comments', 'blog.followers', 'blog.reactions', 'blog.tags', 'blog.users', 'rest_framework']\nAUTH_USER_MODEL = 'users.User'" >> mysite/settings.py
 
       - name: Add blog to mysite URLConf
         run: |
+          cd mysite
           echo "urlpatterns += [path("", include("blog.urls"))]" >> mysite/urls.py
-
-      - name: Run ls and cwd
-        run: |
-          ls -la
-          pwd
 
       - name: Run Check
         run: |
+          cd mysite
           python manage.py check
 
       - name: Run Migrations
         run: |
+          cd mysite
           python manage.py migrate
 
       - name: Run Tests
         run: |
+          cd mysite
           python manage.py test
