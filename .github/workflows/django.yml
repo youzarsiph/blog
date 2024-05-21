@@ -38,6 +38,7 @@ jobs:
       - name: Add blog to mysite URLConf
         run: |
           cd mysite
+          echo "from django.urls import include" >> mysite/urls.py
           echo "urlpatterns += [path('', include('blog.urls'))]" >> mysite/urls.py
 
       - name: Run Migrations
