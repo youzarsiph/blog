@@ -46,7 +46,7 @@ jobs:
       - name: Run ls and cwd
         run: |
           ls -la
-          cwd
+          pwd
 
       - name: Run Check
         run: |
