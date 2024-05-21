@@ -38,17 +38,17 @@ jobs:
       - name: Add blog to mysite URLConf
         run: |
           cd mysite
-          echo "urlpatterns += [path("", include("blog.urls"))]" >> mysite/urls.py
-
-      - name: Run Check
-        run: |
-          cd mysite
-          python manage.py check
+          echo "urlpatterns += [path('', include('blog.urls'))]" >> mysite/urls.py
 
       - name: Run Migrations
         run: |
           cd mysite
           python manage.py migrate
+
+      - name: Run Check
+        run: |
+          cd mysite
+          python manage.py check
 
       - name: Run Tests
         run: |
