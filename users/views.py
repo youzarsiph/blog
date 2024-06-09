@@ -20,7 +20,7 @@ class UserViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     filterset_fields = ["username"]
     search_fields = ["username", "first_name", "last_name", "bio"]
-    ordering_fields = ["id", "username", "first_name", "date_joined", "last_login"]
+    ordering_fields = ["username", "first_name", "date_joined", "last_login"]
 
     def get_permissions(self):
         if self.action == "list":
@@ -28,6 +28,9 @@ class UserViewSet(ModelViewSet):
 
         elif self.action in ["update", "partial_update", "destroy"]:
             self.permission_classes += [IsAccountOwner]
+
+        elif self.action == "follow":
+            self.permission_classes += [IsAuthenticated]
 
         return super().get_permissions()
 

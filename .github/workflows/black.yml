@@ -1,4 +1,4 @@
-name: Ruff Lint
+name: Black Format
 
 on: [push]
 
@@ -15,8 +15,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ruff
+          pip install black
 
-      - name: Analyzing the code with Ruff
+      - name: Checking the code format with Black
         run: |
-          python -m ruff check $(git ls-files '*.py')
+          python -m black --check $(git ls-files '*.py')

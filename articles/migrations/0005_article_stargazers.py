@@ -7,14 +7,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('articles', '0004_alter_article_tags'),
+        ("articles", "0004_alter_article_tags"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='article',
-            name='stargazers',
-            field=models.ManyToManyField(help_text='Article stargazers', related_name='stargazers', to=settings.AUTH_USER_MODEL),
+            model_name="article",
+            name="stargazers",
+            field=models.ManyToManyField(
+                help_text="Article stargazers",
+                related_name="stargazers",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

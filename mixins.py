@@ -5,7 +5,7 @@ from blog.permissions import IsOwner
 
 
 # Create your mixins here.
-class OwnerMixin(object):
+class OwnerMixin:
     """Adds the owner automatically"""
 
     def get_permissions(self):

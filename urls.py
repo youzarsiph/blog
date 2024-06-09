@@ -1,14 +1,28 @@
 """ URLConf for blog """
 
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from blog.articles.views import ArticleViewSet
+from blog.comments.views import UserCommentsViewSet
+from blog.followers.views import FollowerViewSet
+from blog.reactions.views import ReactionViewSet
+from blog.tags.views import TagViewSet
+from blog.users.views import UserViewSet
 
 
 # Create your URLConf here.
+router = DefaultRouter(trailing_slash=False)
+router.register("articles", ArticleViewSet, "article")
+router.register("comments", UserCommentsViewSet, "comment")
+router.register("followers", FollowerViewSet, "follower")
+router.register("reactions", ReactionViewSet, "reaction")
+router.register("tags", TagViewSet, "tag")
+router.register("users", UserViewSet, "user")
+
 urlpatterns = [
+    path("", include(router.urls)),
     path("", include("blog.articles.urls")),
     path("", include("blog.comments.urls")),
-    path("", include("blog.followers.urls")),
-    path("", include("blog.reactions.urls")),
     path("", include("blog.tags.urls")),
     path("", include("blog.users.urls")),
 ]

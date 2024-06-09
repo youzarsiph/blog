@@ -59,6 +59,11 @@ class Article(models.Model):
         related_name="stargazers",
         help_text="Article stargazers",
     )
+    recommendations = models.ManyToManyField(
+        "self",
+        symmetrical=True,
+        help_text="Similar articles",
+    )
     updated_at = models.DateTimeField(
         auto_now=True,
         help_text="Last update",

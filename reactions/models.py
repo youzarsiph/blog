@@ -34,7 +34,6 @@ class Reaction(models.Model):
             ("😡", "😡 Angry"),
         ],
     )
-    #
     updated_at = models.DateTimeField(
         auto_now=True,
         help_text="Last update",

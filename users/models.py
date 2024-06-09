@@ -34,6 +34,12 @@ class User(AbstractUser):
     )
 
     @property
+    def article_count(self) -> int:
+        """Number of articles of a user"""
+
+        return self.articles.count()
+
+    @property
     def follower_count(self) -> int:
         """Number of followers of a user"""
 

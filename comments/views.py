@@ -6,14 +6,15 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
-from blog.mixins import OwnerMixin
+from blog.ai.views import CommentAIActions
 from blog.comments.models import Comment
 from blog.comments.serializers import CommentSerializer
+from blog.mixins import OwnerMixin
 from blog.permissions import IsListOnly, IsReadOnly
 
 
 # Create your views here.
-class CommentViewSet(OwnerMixin, ModelViewSet):
+class UserCommentsViewSet(OwnerMixin, CommentAIActions, ModelViewSet):
     """Create, read, update and delete Comments"""
 
     queryset = Comment.objects.all()
@@ -21,7 +22,7 @@ class CommentViewSet(OwnerMixin, ModelViewSet):
     permission_classes = [IsAuthenticated]
     search_fields = ["user", "content"]
     filterset_fields = ["user", "article", "created_at"]
-    ordering_fields = ["id", "created_at", "updated_at"]
+    ordering_fields = ["created_at", "updated_at"]
 
     @action(methods=["post"], detail=True)
     def reply(self, request: Request, pk: int) -> Response:
@@ -41,7 +42,7 @@ class CommentViewSet(OwnerMixin, ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class ArticleCommentsViewSet(CommentViewSet):
+class ArticleCommentsViewSet(UserCommentsViewSet):
     """Comments of an article"""
 
     filterset_fields = ["user", "created_at"]
@@ -57,7 +58,7 @@ class ArticleCommentsViewSet(CommentViewSet):
         return super().get_queryset().filter(article_id=self.kwargs["id"])
 
 
-class UserCommentsViewSet(CommentViewSet):
+class UserCommentsViewSet(UserCommentsViewSet):
     """Comments of a user"""
 
     filterset_fields = ["article", "created_at"]
@@ -68,7 +69,7 @@ class UserCommentsViewSet(CommentViewSet):
         return super().get_queryset().filter(user=self.request.user)
 
 
-class CommentRepliesViewSet(CommentViewSet):
+class CommentRepliesViewSet(UserCommentsViewSet):
     """Replies of a comment"""
 
     permission_classes = [IsAuthenticated, IsReadOnly, IsListOnly]

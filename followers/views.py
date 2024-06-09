@@ -20,7 +20,7 @@ class FollowerViewSet(ModelViewSet):
     serializer_class = FollowerSerializer
     permission_classes = [IsAuthenticated, IsReadOnly, IsListOnly]
     filterset_fields = ["from_user", "to_user"]
-    ordering_fields = ["id", "created_at", "updated_at"]
+    ordering_fields = ["created_at", "updated_at"]
 
     def get_queryset(self):
         """Filter queryset by request.user"""
@@ -43,7 +43,7 @@ class UserFollowersViewSet(FollowerViewSet):
         return super().get_queryset().filter(to_user=self.request.user)
 
 
-class UserFollowingsViewSet(FollowerViewSet):
+class UserFollowingViewSet(FollowerViewSet):
     """Users followed by a user"""
 
     filterset_fields = ["to_user"]

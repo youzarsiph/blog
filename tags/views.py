@@ -16,7 +16,7 @@ class TagViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     filterset_fields = ["name", "color"]
     search_fields = ["name", "description"]
-    ordering_fields = ["id", "name", "color", "created_at", "updated_at"]
+    ordering_fields = ["name", "color", "created_at", "updated_at"]
 
     def get_permissions(self):
         if self.action in ["create", "update", "partial_update", "destroy"]:
@@ -33,4 +33,4 @@ class ArticleTagsViewSet(TagViewSet):
     def get_queryset(self):
         """Filter queryset by article"""
 
-        return super().get_queryset().filter(article_id=self.kwargs["id"])
+        return super().get_queryset().filter(articles=self.kwargs["id"])

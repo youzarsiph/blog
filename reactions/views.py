@@ -3,7 +3,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from blog.mixins import OwnerMixin
-from blog.permissions import IsListOnly, IsReadOnly
 from blog.reactions.models import Reaction
 from blog.reactions.serializers import ReactionSerializer
 
@@ -36,8 +35,6 @@ class ArticleReactionsViewSet(ReactionViewSet):
 
 class UserReactionsViewSet(ReactionViewSet):
     """Reactions of a user"""
-
-    permission_classes = [IsAuthenticated, IsReadOnly, IsListOnly]
 
     def get_queryset(self):
         """Filter queryset by request.user"""

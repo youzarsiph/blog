@@ -39,5 +39,10 @@ class Comment(models.Model):
         help_text="Date published",
     )
 
+    def reply_count(self) -> int:
+        """Number of replies to this comment"""
+
+        return self.replies.count()
+
     def __str__(self) -> str:
-        return super().__str__()
+        return f"Comment by {self.user} on {self.article}: {self.content[:20]}..."

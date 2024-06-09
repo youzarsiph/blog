@@ -6,14 +6,17 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
-from blog.mixins import OwnerMixin
+from blog.ai.recsys.views import ArticleRecSysActions
+from blog.ai.views import ArticleAIActions
 from blog.articles.models import Article
 from blog.articles.serializers import ArticleSerializer
+from blog.followers.models import Follower
+from blog.mixins import OwnerMixin
 from blog.permissions import IsListOnly, IsReadOnly
 
 
 # Create your views here.
-class ArticleViewSet(OwnerMixin, ModelViewSet):
+class ArticleViewSet(OwnerMixin, ArticleAIActions, ArticleRecSysActions, ModelViewSet):
     """Create, read, update and delete Articles"""
 
     queryset = Article.objects.all()
@@ -21,7 +24,7 @@ class ArticleViewSet(OwnerMixin, ModelViewSet):
     permission_classes = [IsAuthenticated]
     search_fields = ["title", "content"]
     filterset_fields = ["user", "is_pinned", "tags"]
-    ordering_fields = ["id", "title", "is_pinned"]
+    ordering_fields = ["title", "is_pinned"]
 
     @action(methods=["post"], detail=True)
     def react(self, request: Request, pk: int) -> Response:
@@ -66,6 +69,28 @@ class ArticleViewSet(OwnerMixin, ModelViewSet):
         # Get queryset and filter
         queryset = self.filter_queryset(self.get_queryset()).filter(
             stargazers=request.user
+        )
+
+        # Paginate the queryset
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+
+        # Return the data
+        return Response(serializer.data)
+
+    @action(methods=["get"], detail=False)
+    def feed(self, request: Request) -> Response:
+        """Article feed"""
+
+        # Get queryset and filter
+        queryset = self.filter_queryset(self.get_queryset()).filter(
+            user__in=[
+                f.from_user for f in Follower.objects.filter(to_user=request.user)
+            ]
         )
 
         # Paginate the queryset
