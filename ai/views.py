@@ -8,15 +8,11 @@ from rest_framework.response import Response
 from blog.ai.utils.text import clean_output
 
 
-# TOKEN = os.environ["HF_TOKEN"]
-TOKEN = "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"
-
-
 # Create your views here.
 class ArticleAIActions:
     """AI actions for articles"""
 
-    client = InferenceClient(token=TOKEN)
+    client = InferenceClient()
 
     @action(methods=["get", "post"], detail=False)
     def generate(self, request: Request) -> Response:
@@ -117,7 +113,7 @@ class ArticleAIActions:
 class CommentAIActions:
     """AI actions for comments"""
 
-    client = InferenceClient(token=TOKEN)
+    client = InferenceClient()
 
     @action(methods=["get", "post"], detail=True, url_path="summary")
     def summary(self, request: Request, pk: int) -> Response:
