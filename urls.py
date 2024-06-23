@@ -3,7 +3,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from blog.articles.views import ArticleViewSet
-from blog.comments.views import UserCommentsViewSet
+from blog.comments.views import CommentViewSet
 from blog.followers.views import FollowerViewSet
 from blog.reactions.views import ReactionViewSet
 from blog.tags.views import TagViewSet
@@ -13,7 +13,7 @@ from blog.users.views import UserViewSet
 # Create your URLConf here.
 router = DefaultRouter(trailing_slash=False)
 router.register("articles", ArticleViewSet, "article")
-router.register("comments", UserCommentsViewSet, "comment")
+router.register("comments", CommentViewSet, "comment")
 router.register("followers", FollowerViewSet, "follower")
 router.register("reactions", ReactionViewSet, "reaction")
 router.register("tags", TagViewSet, "tag")

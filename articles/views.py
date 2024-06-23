@@ -13,6 +13,7 @@ from blog.articles.serializers import ArticleSerializer
 from blog.followers.models import Follower
 from blog.mixins import OwnerMixin
 from blog.permissions import IsListOnly, IsReadOnly
+from blog.reactions.serializers import ReactionSerializer
 
 
 # Create your views here.
@@ -22,9 +23,17 @@ class ArticleViewSet(OwnerMixin, ArticleAIActions, ArticleRecSysActions, ModelVi
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
     permission_classes = [IsAuthenticated]
-    search_fields = ["title", "content"]
+    search_fields = ["title", "headline", "content"]
     filterset_fields = ["user", "is_pinned", "tags"]
-    ordering_fields = ["title", "is_pinned"]
+    ordering_fields = ["title", "created_at", "updated_at"]
+
+    def get_serializer_class(self):
+        """Return different serializer_class based on self.action"""
+
+        if self.action == "react":
+            self.serializer_class = ReactionSerializer
+
+        return super().get_serializer_class()
 
     @action(methods=["post"], detail=True)
     def react(self, request: Request, pk: int) -> Response:

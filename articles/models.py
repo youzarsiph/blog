@@ -17,16 +17,26 @@ class Article(models.Model):
         related_name="articles",
         help_text="Article Owner",
     )
-    title = models.CharField(
-        max_length=64,
-        db_index=True,
-        help_text="Article title",
-    )
     photo = models.ImageField(
         null=True,
         blank=True,
         help_text="Article Photo",
         upload_to="blog/images/articles/",
+    )
+    title = models.CharField(
+        max_length=64,
+        db_index=True,
+        help_text="Article title",
+    )
+    headline = models.CharField(
+        max_length=256,
+        db_index=True,
+        help_text="Article headline",
+    )
+    extras = models.JSONField(
+        null=True,
+        blank=True,
+        help_text="Article extra data like summary etc...",
     )
     content = models.TextField(
         db_index=True,

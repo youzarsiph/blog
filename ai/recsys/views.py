@@ -18,7 +18,7 @@ class ArticleRecSysActions:
 
     @action(methods=["get", "post"], detail=False)
     def explore(self, request: Request) -> Response:
-        """Recommended articles for current user using Collaborative Filtering"""
+        """Recommended articles for current user using Collaborative Filtering Algorithm"""
 
         # Get all articles
         articles = Article.objects.all()

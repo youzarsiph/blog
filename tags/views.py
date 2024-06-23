@@ -16,7 +16,7 @@ class TagViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     filterset_fields = ["name", "color"]
     search_fields = ["name", "description"]
-    ordering_fields = ["name", "color", "created_at", "updated_at"]
+    ordering_fields = ["name", "created_at", "updated_at"]
 
     def get_permissions(self):
         if self.action in ["create", "update", "partial_update", "destroy"]:

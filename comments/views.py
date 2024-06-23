@@ -14,14 +14,14 @@ from blog.permissions import IsListOnly, IsReadOnly
 
 
 # Create your views here.
-class UserCommentsViewSet(OwnerMixin, CommentAIActions, ModelViewSet):
+class CommentViewSet(OwnerMixin, CommentAIActions, ModelViewSet):
     """Create, read, update and delete Comments"""
 
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated]
-    search_fields = ["user", "content"]
-    filterset_fields = ["user", "article", "created_at"]
+    search_fields = ["content"]
+    filterset_fields = ["user", "article"]
     ordering_fields = ["created_at", "updated_at"]
 
     @action(methods=["post"], detail=True)
@@ -42,7 +42,7 @@ class UserCommentsViewSet(OwnerMixin, CommentAIActions, ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class ArticleCommentsViewSet(UserCommentsViewSet):
+class ArticleCommentsViewSet(CommentViewSet):
     """Comments of an article"""
 
     filterset_fields = ["user", "created_at"]
@@ -58,7 +58,7 @@ class ArticleCommentsViewSet(UserCommentsViewSet):
         return super().get_queryset().filter(article_id=self.kwargs["id"])
 
 
-class UserCommentsViewSet(UserCommentsViewSet):
+class UserCommentsViewSet(CommentViewSet):
     """Comments of a user"""
 
     filterset_fields = ["article", "created_at"]
@@ -69,7 +69,7 @@ class UserCommentsViewSet(UserCommentsViewSet):
         return super().get_queryset().filter(user=self.request.user)
 
 
-class CommentRepliesViewSet(UserCommentsViewSet):
+class CommentRepliesViewSet(CommentViewSet):
     """Replies of a comment"""
 
     permission_classes = [IsAuthenticated, IsReadOnly, IsListOnly]

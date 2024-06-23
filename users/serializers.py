@@ -12,18 +12,29 @@ class UserSerializer(ModelSerializer):
         """Meta data"""
 
         model = User
-        read_only_fields = ["date_joined", "last_login"]
         fields = [
             "id",
             "url",
             "photo",
-            "cover",
             "username",
             "first_name",
             "last_name",
-            "bio",
             "article_count",
             "follower_count",
+        ]
+
+
+class UserRetrieveSerializer(UserSerializer):
+    """User Serializer for retrieve action"""
+
+    class Meta(UserSerializer.Meta):
+        """Meta data"""
+
+        read_only_fields = ["date_joined", "last_login"]
+        fields = UserSerializer.Meta.fields + [
+            "cover",
+            "email",
+            "bio",
             "date_joined",
             "last_login",
         ]

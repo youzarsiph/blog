@@ -25,6 +25,11 @@ class Comment(models.Model):
         db_index=True,
         help_text="Content",
     )
+    extras = models.JSONField(
+        null=True,
+        blank=True,
+        help_text="Comment extra data like summary etc...",
+    )
     replies = models.ManyToManyField(
         "self",
         symmetrical=False,

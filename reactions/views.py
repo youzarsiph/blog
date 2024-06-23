@@ -14,9 +14,9 @@ class ReactionViewSet(OwnerMixin, ModelViewSet):
     queryset = Reaction.objects.all()
     serializer_class = ReactionSerializer
     permission_classes = [IsAuthenticated]
-    search_fields = ["value"]
-    ordering_fields = ["id", "created_at", "updated_at"]
-    filterset_fields = ["user", "article"]
+    search_fields = ["emoji"]
+    filterset_fields = ["user", "article", "emoji"]
+    ordering_fields = ["created_at", "updated_at"]
 
 
 class ArticleReactionsViewSet(ReactionViewSet):

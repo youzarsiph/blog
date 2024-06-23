@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
+from blog.ai import serializers
 from blog.ai.utils.text import clean_output
 
 
@@ -14,60 +15,90 @@ class ArticleAIActions:
 
     client = InferenceClient()
 
-    @action(methods=["get", "post"], detail=False)
-    def generate(self, request: Request) -> Response:
+    def get_serializer_class(self):
+        """Return different serializer_class for different actions"""
+
+        match self.action:
+            case "article_generation":
+                self.serializer_class = serializers.TextGenerationSerializer
+
+            case "qa":
+                self.serializer_class = serializers.QuestionAnsweringSerializer
+
+            case "translation":
+                self.serializer_class = serializers.TranslationSerializer
+
+            case "summarization":
+                self.serializer_class = serializers.BaseSerializer
+
+        return super().get_serializer_class()
+
+    @action(methods=["post"], detail=False, url_path="article-generation")
+    def article_generation(self, request: Request) -> Response:
         """Generate an article"""
 
-        # Get the prompt
-        prompt = request.POST.get("prompt", None)
+        # Get the serializer
+        serializer = self.get_serializer(data=request.POST)
 
-        if prompt is None:
+        # Data validation
+        if not serializer.is_valid():
             return Response(
-                {"details": "The prompt field is required."},
+                serializer.error_messages,
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
         return Response(
             {
                 "article": self.client.text_generation(
-                    prompt,
-                    max_new_tokens=4096,
+                    prompt=serializer.validated_data["prompt"],
+                    model=serializer.validated_data["model"],
                 )
             },
         )
 
-    @action(methods=["get", "post"], detail=True, url_path="summary")
-    def summary(self, request: Request, pk: int) -> Response:
+    @action(methods=["post"], detail=True)
+    def summarization(self, request: Request, pk: int) -> Response:
         """Summarize an article"""
 
         # Get article object
         article = self.get_object()
+
+        # Get the serializer
+        serializer = self.get_serializer(data=request.POST)
+
+        # Data validation
+        if not serializer.is_valid():
+            return Response(
+                serializer.error_messages,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         # Summarize article
         return Response(
             {
                 "summary": clean_output(
                     self.client.summarization(
-                        f"{article.title} {article.content}"
+                        text=f"{article.title}\n{article.headline}\n{article.content}",
+                        model=serializer.validated_data["model"],
                     ).summary_text
                 )
             },
         )
 
-    @action(methods=["get", "post"], detail=True, url_path="translation")
+    @action(methods=["post"], detail=True, url_path="translation")
     def translation(self, request: Request, pk: int) -> Response:
         """Translate an article"""
 
         # Get article object
         article = self.get_object()
 
-        # Get source and target languages
-        src = request.POST.get("src", None)
-        target = request.POST.get("target", None)
+        # Get the serializer
+        serializer = self.get_serializer(data=request.POST)
 
-        if src is None or target is None:
+        # Data validation
+        if not serializer.is_valid():
             return Response(
-                {"details": "The src/target fields are required."},
+                serializer.error_messages,
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -76,35 +107,37 @@ class ArticleAIActions:
             {
                 "translation": self.client.translation(
                     text=f"{article.title} {article.content}",
-                    src_lang=src,
-                    tgt_lang=target,
-                    model="Helsinki-NLP/opus-mt-en-fr",
+                    src_lang=serializer.validated_data["source"],
+                    tgt_lang=serializer.validated_data["target"],
+                    model=serializer.validated_data["model"],
                 ).translation_text
             },
         )
 
-    @action(methods=["get", "post"], detail=True, url_path="qa")
+    @action(methods=["post"], detail=True, url_path="qa")
     def qa(self, request: Request, pk: int) -> Response:
         """Answer question using data form this article"""
 
         # Get article object
         article = self.get_object()
 
-        # Get question
-        question = request.POST.get("question", None)
+        # Get the serializer
+        serializer = self.get_serializer(data=request.POST)
 
-        if question is None:
+        # Data validation
+        if not serializer.is_valid():
             return Response(
-                {"details": "The question field is required."},
+                serializer.error_messages,
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
         return Response(
             {
-                "question": "What is Clustering?",
+                "question": serializer.validated_data["question"],
                 "answer": self.client.question_answering(
-                    question="What is Clustering?",
+                    question=serializer.validated_data["question"],
                     context=f"{article.title} {article.content}",
+                    model=serializer.validated_data["model"],
                 ),
             },
         )
@@ -115,8 +148,23 @@ class CommentAIActions:
 
     client = InferenceClient()
 
-    @action(methods=["get", "post"], detail=True, url_path="summary")
-    def summary(self, request: Request, pk: int) -> Response:
+    def get_serializer_class(self):
+        """Return different serializer_class for different actions"""
+
+        match self.action:
+            case "summarization":
+                self.serializer_class = serializers.BaseSerializer
+
+            case "sentiment_analysis":
+                self.serializer_class = serializers.BaseSerializer
+
+            case "translation":
+                self.serializer_class = serializers.TranslationSerializer
+
+        return super().get_serializer_class()
+
+    @action(methods=["post"], detail=True)
+    def summarization(self, request: Request, pk: int) -> Response:
         """Summarize a comment"""
 
         # Get comment object
@@ -131,7 +179,7 @@ class CommentAIActions:
             },
         )
 
-    @action(methods=["get", "post"], detail=True, url_path="translation")
+    @action(methods=["post"], detail=True, url_path="translation")
     def translation(self, request: Request, pk: int) -> Response:
         """Translate a comment"""
 
@@ -160,7 +208,7 @@ class CommentAIActions:
             },
         )
 
-    @action(methods=["get", "post"], detail=True, url_path="sentiment-analysis")
+    @action(methods=["post"], detail=True, url_path="sentiment-analysis")
     def sentiment_analysis(self, request: Request, pk: int) -> Response:
         """Analyze comment sentiment"""
 
