@@ -2,11 +2,14 @@
 
 from rest_framework.serializers import ModelSerializer
 from blog.articles.models import Article
+from blog.users.serializers import UserSerializer
 
 
 # Create your serializers here.
 class ArticleSerializer(ModelSerializer):
     """Article Serializer"""
+
+    user = UserSerializer(read_only=True)
 
     class Meta:
         """Meta data"""
@@ -31,3 +34,12 @@ class ArticleSerializer(ModelSerializer):
             "created_at",
             "updated_at",
         ]
+
+
+class ArticleRetrieveSerializer(ArticleSerializer):
+    """Article Serializer"""
+
+    class Meta(ArticleSerializer.Meta):
+        """Meta data"""
+
+        depth = 1

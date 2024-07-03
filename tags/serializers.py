@@ -22,3 +22,14 @@ class TagSerializer(ModelSerializer):
             "created_at",
             "updated_at",
         ]
+
+
+class TagRetrieveSerializer(TagSerializer):
+    """Tag Serializer"""
+
+    class Meta(TagSerializer.Meta):
+        """Meta data"""
+
+        depth = 1
+        read_only_fields = ['articles']
+        fields = TagSerializer.Meta.fields + ['articles']

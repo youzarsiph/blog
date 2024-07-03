@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from blog.ai.recsys.views import ArticleRecSysActions
 from blog.ai.views import ArticleAIActions
 from blog.articles.models import Article
-from blog.articles.serializers import ArticleSerializer
+from blog.articles.serializers import ArticleRetrieveSerializer, ArticleSerializer
 from blog.followers.models import Follower
 from blog.mixins import OwnerMixin
 from blog.permissions import IsListOnly, IsReadOnly
@@ -30,8 +30,15 @@ class ArticleViewSet(OwnerMixin, ArticleAIActions, ArticleRecSysActions, ModelVi
     def get_serializer_class(self):
         """Return different serializer_class based on self.action"""
 
-        if self.action == "react":
-            self.serializer_class = ReactionSerializer
+        match self.action:
+            case "react":
+                self.serializer_class = ReactionSerializer
+
+            case "retrieve":
+                self.serializer_class = ArticleRetrieveSerializer
+
+            case _:
+                pass
 
         return super().get_serializer_class()
 

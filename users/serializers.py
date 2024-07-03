@@ -30,8 +30,10 @@ class UserRetrieveSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         """Meta data"""
 
-        read_only_fields = ["date_joined", "last_login"]
+        depth = 1
+        read_only_fields = ["date_joined", "last_login", "articles"]
         fields = UserSerializer.Meta.fields + [
+            "articles",
             "cover",
             "email",
             "bio",

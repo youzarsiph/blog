@@ -2,11 +2,14 @@
 
 from rest_framework.serializers import ModelSerializer
 from blog.comments.models import Comment
+from blog.users.serializers import UserSerializer
 
 
 # Create your serializers here.
 class CommentSerializer(ModelSerializer):
     """Comment Serializer"""
+
+    user = UserSerializer(read_only=True)
 
     class Meta:
         """Meta data"""

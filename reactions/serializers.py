@@ -2,11 +2,14 @@
 
 from rest_framework.serializers import ModelSerializer
 from blog.reactions.models import Reaction
+from blog.users.serializers import UserSerializer
 
 
 # Create your serializers here.
 class ReactionSerializer(ModelSerializer):
     """Reaction Serializer"""
+
+    user = UserSerializer(read_only=True)
 
     class Meta:
         """Meta data"""
