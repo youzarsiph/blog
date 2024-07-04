@@ -4,7 +4,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from blog.permissions import IsListOnly, IsReadOnly
 from blog.tags.models import Tag
-from blog.tags.serializers import TagSerializer
+from blog.tags.serializers import TagSerializer, TagRetrieveSerializer
 
 
 # Create your views here.
@@ -17,6 +17,18 @@ class TagViewSet(ModelViewSet):
     filterset_fields = ["name", "color"]
     search_fields = ["name", "description"]
     ordering_fields = ["name", "created_at", "updated_at"]
+
+    def get_serializer_class(self):
+        """Return different serializer_class based on self.action"""
+
+        match self.action:
+            case "retrieve":
+                self.serializer_class = TagRetrieveSerializer
+
+            case _:
+                pass
+
+        return super().get_serializer_class()
 
     def get_permissions(self):
         if self.action in ["create", "update", "partial_update", "destroy"]:
