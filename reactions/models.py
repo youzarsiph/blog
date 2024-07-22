@@ -4,6 +4,16 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 
+REACTIONS = (
+    ("👍🏻", "👍🏻 Like"),
+    ("❤️", "❤️ Love"),
+    ("🤣", "🤣 Funny"),
+    ("😲", "😲 Wow"),
+    ("🤔", "🤔 Thinking"),
+    ("😡", "😡 Angry"),
+)
+
+
 # Create your models here.
 User = get_user_model()
 
@@ -25,14 +35,7 @@ class Reaction(models.Model):
         max_length=8,
         default="👍🏻",
         help_text="Reaction",
-        choices=[
-            ("👍🏻", "👍🏻 Like"),
-            ("❤️", "❤️ Love"),
-            ("🤣", "🤣 Funny"),
-            ("😲", "😲 Wow"),
-            ("🤔", "🤔 Thinking"),
-            ("😡", "😡 Angry"),
-        ],
+        choices=REACTIONS,
     )
     updated_at = models.DateTimeField(
         auto_now=True,
@@ -54,4 +57,4 @@ class Reaction(models.Model):
         ]
 
     def __str__(self) -> str:
-        return f"{self.user} reacted to {self.article}"
+        return f"{self.user} --{self.emoji}-> {self.article}"

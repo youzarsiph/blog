@@ -6,6 +6,7 @@ from blog.articles.views import ArticleViewSet
 from blog.comments.views import CommentViewSet
 from blog.followers.views import FollowerViewSet
 from blog.reactions.views import ReactionViewSet
+from blog.reports.views import ReportViewSet
 from blog.tags.views import TagViewSet
 from blog.users.views import UserViewSet
 
@@ -16,6 +17,7 @@ router.register("articles", ArticleViewSet, "article")
 router.register("comments", CommentViewSet, "comment")
 router.register("followers", FollowerViewSet, "follower")
 router.register("reactions", ReactionViewSet, "reaction")
+router.register("reports", ReportViewSet, "report")
 router.register("tags", TagViewSet, "tag")
 router.register("users", UserViewSet, "user")
 
@@ -23,6 +25,7 @@ urlpatterns = [
     path("", include(router.urls)),
     path("", include("blog.articles.urls")),
     path("", include("blog.comments.urls")),
+    path("", include("blog.reports.urls")),
     path("", include("blog.tags.urls")),
     path("", include("blog.users.urls")),
 ]

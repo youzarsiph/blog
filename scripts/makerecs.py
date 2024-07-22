@@ -17,6 +17,7 @@ def run() -> None:
             {
                 "id": article.pk,
                 "title": article.title,
+                "headline": article.headline,
                 "content": article.content,
                 "created_at": article.created_at,
                 "updated_at": article.updated_at,
@@ -29,7 +30,7 @@ def run() -> None:
     vectorizer = TfidfVectorizer(stop_words="english")
     matrix = vectorizer.fit_transform(
         [
-            f"{a[1]}\n\nDate published: {a[3]}, Last update: {a[4]}\n{a[2]}"
+            f"{a[1]}\n\nDate published: {a[3]}, Last update: {a[4]}\n{a[2]}\n{a[3]}"
             for a in df.values
         ]
     )
@@ -51,7 +52,7 @@ def run() -> None:
         article.recommendations.clear()
 
         # Add recommended articles
-        for i in a[1]:
-            article.recommendations.add(i)
+        for a in a[1]:
+            article.recommendations.add(a)
 
     print("All Done")

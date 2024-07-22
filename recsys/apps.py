@@ -1,11 +1,11 @@
-""" AppConf for blog.ai.recsys """
+""" AppConf for blog.recsys """
 
 from django.apps import AppConfig
 
 
 # Create your AppConf here.
 class RecSysConfig(AppConfig):
-    """App Configuration for blog.ai.recsys"""
+    """App Configuration for blog.recsys"""
 
-    name = "blog.ai.recsys"
+    name = "blog.recsys"
     default_auto_field = "django.db.models.BigAutoField"

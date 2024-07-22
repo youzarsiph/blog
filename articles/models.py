@@ -46,11 +46,11 @@ class Article(models.Model):
         default=False,
         help_text="Designates if the Article is pinned",
     )
-    tags = models.ManyToManyField(
-        "tags.Tag",
-        blank=True,
-        related_name="articles",
-        help_text="Article tags",
+    comments = models.ManyToManyField(
+        User,
+        related_name="comments",
+        through="comments.Comment",
+        help_text="Article comments",
     )
     reactions = models.ManyToManyField(
         User,
@@ -58,21 +58,27 @@ class Article(models.Model):
         through="reactions.Reaction",
         help_text="Article reactions",
     )
-    comments = models.ManyToManyField(
-        User,
-        related_name="comments",
-        through="comments.Comment",
-        help_text="Article comments",
+    recommendations = models.ManyToManyField(
+        "self",
+        symmetrical=True,
+        help_text="Similar articles",
     )
     stargazers = models.ManyToManyField(
         User,
         related_name="stargazers",
         help_text="Article stargazers",
     )
-    recommendations = models.ManyToManyField(
-        "self",
-        symmetrical=True,
-        help_text="Similar articles",
+    reports = models.ManyToManyField(
+        User,
+        related_name="reports",
+        through="reports.Report",
+        help_text="Article reports",
+    )
+    tags = models.ManyToManyField(
+        "tags.Tag",
+        blank=True,
+        related_name="articles",
+        help_text="Article tags",
     )
     updated_at = models.DateTimeField(
         auto_now=True,
@@ -94,6 +100,12 @@ class Article(models.Model):
         """Number of reactions of an article"""
 
         return self.reactions.count()
+
+    @property
+    def report_count(self) -> int:
+        """Number of reports of an article"""
+
+        return self.reports.count()
 
     @property
     def tag_count(self) -> int:

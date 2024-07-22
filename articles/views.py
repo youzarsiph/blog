@@ -1,12 +1,13 @@
 """ API endpoints for blog.articles """
 
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
-from blog.ai.recsys.views import ArticleRecSysActions
+from blog.recsys.views import ArticleRecSysActions
 from blog.ai.views import ArticleAIActions
 from blog.articles.models import Article
 from blog.articles.serializers import ArticleRetrieveSerializer, ArticleSerializer
@@ -47,12 +48,22 @@ class ArticleViewSet(OwnerMixin, ArticleAIActions, ArticleRecSysActions, ModelVi
         """React to an article"""
 
         message: str
+
         # Get article object
         article = self.get_object()
 
+        # Data validation
+        serializer = self.get_serializer(data=request.POST)
+
+        if not serializer.is_valid():
+            return Response(
+                serializer.error_messages,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         if self.request.user not in article.reactions.all():
             article.reactions.add(self.request.user)
-            message = f"You reacted to {article} with 👍🏻"
+            message = f"You reacted to {article} with {serializer.validated_data.get('emoji')}"
 
         else:
             article.reactions.remove(self.request.user)
@@ -70,13 +81,51 @@ class ArticleViewSet(OwnerMixin, ArticleAIActions, ArticleRecSysActions, ModelVi
 
         if self.request.user not in article.stargazers.all():
             article.stargazers.add(self.request.user)
-            message = f"{article} starred"
+            message = f"Article {article} starred"
 
         else:
             article.stargazers.remove(self.request.user)
-            message = f"{article} un-starred"
+            message = f"Article {article} un-starred"
 
         return Response({"details": message}, status=status.HTTP_200_OK)
+
+    @action(methods=["get"], detail=False)
+    def popular(self, request: Request) -> Response:
+        """Popular articles"""
+
+        # Get queryset and filter
+        queryset = self.filter_queryset(self.get_queryset()).order_by("-stargazers")
+
+        # Paginate the queryset
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+
+        # Return the data
+        return Response(serializer.data)
+
+    @action(methods=["get"], detail=False)
+    def trending(self, request: Request) -> Response:
+        """Starred articles"""
+
+        # Get queryset and filter
+        queryset = self.filter_queryset(self.get_queryset()).filter(
+            created_at__gt=timezone.now()
+        )
+
+        # Paginate the queryset
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+
+        # Return the data
+        return Response(serializer.data)
 
     @action(methods=["get"], detail=False)
     def starred(self, request: Request) -> Response:

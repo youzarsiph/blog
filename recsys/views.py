@@ -1,4 +1,4 @@
-""" API endpoints for blog.ai.recsys """
+""" API endpoints for blog.recsys """
 
 import numpy as np
 import pandas as pd

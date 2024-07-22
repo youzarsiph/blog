@@ -1,10 +1,10 @@
 """ Tests for blog.tags.views """
 
-from django.test import TestCase
+from rest_framework.test import APITestCase
 
 
 # Create your tests here.
-class TagViewSetTests(TestCase):
+class TagViewSetTests(APITestCase):
     """Tag ViewSet tests"""
 
     pass

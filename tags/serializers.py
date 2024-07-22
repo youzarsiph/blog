@@ -31,5 +31,5 @@ class TagRetrieveSerializer(TagSerializer):
         """Meta data"""
 
         depth = 1
-        read_only_fields = ['articles']
-        fields = TagSerializer.Meta.fields + ['articles']
+        read_only_fields = ["articles"]
+        fields = TagSerializer.Meta.fields + ["articles"]

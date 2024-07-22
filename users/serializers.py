@@ -19,6 +19,7 @@ class UserSerializer(ModelSerializer):
             "username",
             "first_name",
             "last_name",
+            "bio",
             "article_count",
             "follower_count",
         ]
@@ -36,7 +37,6 @@ class UserRetrieveSerializer(UserSerializer):
             "articles",
             "cover",
             "email",
-            "bio",
             "date_joined",
             "last_login",
         ]

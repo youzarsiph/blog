@@ -1,10 +1,10 @@
 """ Tests for blog.followers.views """
 
-from django.test import TestCase
+from rest_framework.test import APITestCase
 
 
 # Create your tests here.
-class FollowerViewSetTests(TestCase):
+class FollowerViewSetTests(APITestCase):
     """Follower ViewSet tests"""
 
     pass

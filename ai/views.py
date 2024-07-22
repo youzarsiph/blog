@@ -6,7 +6,6 @@ from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 from blog.ai import serializers
-from blog.ai.utils.text import clean_output
 
 
 # Create your views here.
@@ -20,7 +19,7 @@ class ArticleAIActions:
 
         match self.action:
             case "article_generation":
-                self.serializer_class = serializers.TextGenerationSerializer
+                self.serializer_class = serializers.ChatSerializer
 
             case "qa":
                 self.serializer_class = serializers.QuestionAnsweringSerializer
@@ -47,11 +46,22 @@ class ArticleAIActions:
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        messages = [
+            {
+                "role": "system",
+                "content": "",
+            },
+            {
+                "role": "user",
+                "content": serializer.validated_data["message"],
+            },
+        ]
+
         return Response(
             {
-                "article": self.client.text_generation(
-                    prompt=serializer.validated_data["prompt"],
-                    model=serializer.validated_data["model"],
+                "article": self.client.chat_completion(
+                    messages=messages,
+                    model=serializer.validated_data.get("model"),
                 )
             },
         )
@@ -76,12 +86,10 @@ class ArticleAIActions:
         # Summarize article
         return Response(
             {
-                "summary": clean_output(
-                    self.client.summarization(
-                        text=f"{article.title}\n{article.headline}\n{article.content}",
-                        model=serializer.validated_data["model"],
-                    ).summary_text
-                )
+                "summary": self.client.summarization(
+                    text=f"{article.title}\n{article.headline}\n{article.content}",
+                    model=serializer.validated_data.get("model"),
+                ).summary_text
             },
         )
 
@@ -109,7 +117,7 @@ class ArticleAIActions:
                     text=f"{article.title} {article.content}",
                     src_lang=serializer.validated_data["source"],
                     tgt_lang=serializer.validated_data["target"],
-                    model=serializer.validated_data["model"],
+                    model=serializer.validated_data.get("model"),
                 ).translation_text
             },
         )
@@ -137,7 +145,7 @@ class ArticleAIActions:
                 "answer": self.client.question_answering(
                     question=serializer.validated_data["question"],
                     context=f"{article.title} {article.content}",
-                    model=serializer.validated_data["model"],
+                    model=serializer.validated_data.get("model"),
                 ),
             },
         )
@@ -152,10 +160,7 @@ class CommentAIActions:
         """Return different serializer_class for different actions"""
 
         match self.action:
-            case "summarization":
-                self.serializer_class = serializers.BaseSerializer
-
-            case "sentiment_analysis":
+            case "summarization" | "sentiment_analysis":
                 self.serializer_class = serializers.BaseSerializer
 
             case "translation":
@@ -170,13 +175,19 @@ class CommentAIActions:
         # Get comment object
         comment = self.get_object()
 
+        # Get the serializer
+        serializer = self.get_serializer(data=request.POST)
+
+        # Data validation
+        if not serializer.is_valid():
+            return Response(
+                serializer.error_messages,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         # Summarize comment
         return Response(
-            {
-                "summary": clean_output(
-                    self.client.summarization(f"{comment.content}").summary_text
-                )
-            },
+            {"summary": self.client.summarization(comment.content).summary_text},
         )
 
     @action(methods=["post"], detail=True, url_path="translation")
@@ -186,13 +197,13 @@ class CommentAIActions:
         # Get comment object
         comment = self.get_object()
 
-        # Get source and target languages
-        src = request.POST.get("src", None)
-        target = request.POST.get("target", None)
+        # Get the serializer
+        serializer = self.get_serializer(data=request.POST)
 
-        if src is None or target is None:
+        # Data validation
+        if not serializer.is_valid():
             return Response(
-                {"details": "The src/target fields are required."},
+                serializer.error_messages,
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -200,10 +211,10 @@ class CommentAIActions:
         return Response(
             {
                 "translation": self.client.translation(
-                    text=f"{comment.content}",
-                    src_lang=src,
-                    tgt_lang=target,
-                    model="Helsinki-NLP/opus-mt-en-fr",
+                    text=comment.content,
+                    src_lang=serializer.validated_data["source"],
+                    tgt_lang=serializer.validated_data["target"],
+                    model=serializer.validated_data.get("model"),
                 ).translation_text
             },
         )
@@ -214,6 +225,16 @@ class CommentAIActions:
 
         # Get comment object
         comment = self.get_object()
+
+        # Get the serializer
+        serializer = self.get_serializer(data=request.POST)
+
+        # Data validation
+        if not serializer.is_valid():
+            return Response(
+                serializer.error_messages,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         return Response(
             {

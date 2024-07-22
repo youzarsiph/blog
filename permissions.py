@@ -38,12 +38,3 @@ class IsListOnly(BasePermission):
         """Allow access to list action"""
 
         return view.action == "list"
-
-
-class DenyAll(BasePermission):
-    """Deny all access"""
-
-    def has_permission(self, request, view):
-        """Deny all"""
-
-        return False

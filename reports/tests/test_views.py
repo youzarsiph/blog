@@ -1,4 +1,4 @@
-""" Tests for blog.comments.views """
+""" Tests for blog.reports.views """
 
 from rest_framework.test import APITestCase
 

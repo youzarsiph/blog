@@ -43,4 +43,4 @@ class Follower(models.Model):
         ]
 
     def __str__(self) -> str:
-        return f"User {self.from_user} is following {self.to_user}"
+        return f"{self.from_user} -> {self.to_user}"

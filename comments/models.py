@@ -44,6 +44,7 @@ class Comment(models.Model):
         help_text="Date published",
     )
 
+    @property
     def reply_count(self) -> int:
         """Number of replies to this comment"""
 

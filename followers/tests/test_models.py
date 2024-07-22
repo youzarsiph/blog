@@ -4,7 +4,7 @@ from django.test import TestCase
 
 
 # Create your tests here.
-class FollowerModelTests(TestCase):
+class FollowerTests(TestCase):
     """Follower model tests"""
 
     pass

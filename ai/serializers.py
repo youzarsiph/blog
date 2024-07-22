@@ -23,10 +23,10 @@ class QuestionAnsweringSerializer(BaseSerializer):
     )
 
 
-class TextGenerationSerializer(BaseSerializer):
-    """Serializer for text generation"""
+class ChatSerializer(BaseSerializer):
+    """Serializer for chat completion"""
 
-    prompt = serializers.CharField(
+    message = serializers.CharField(
         max_length=1024,
         help_text="Prompt",
     )

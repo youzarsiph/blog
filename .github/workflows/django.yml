@@ -32,7 +32,7 @@ jobs:
       - name: Add blog to INSTALLED_APPS
         run: |
           cd mysite
-          echo "INSTALLED_APPS += ['blog', 'blog.articles', 'blog.comments', 'blog.followers', 'blog.reactions', 'blog.tags', 'blog.users', 'rest_framework']" >> mysite/settings.py
+          echo "INSTALLED_APPS += ['blog', 'blog.ai', 'blog.articles', 'blog.comments', 'blog.followers', 'blog.reactions', 'blog.recsys', 'blog.reports', 'blog.tags', 'blog.users', 'rest_framework']" >> mysite/settings.py
           echo "AUTH_USER_MODEL = 'users.User'" >> mysite/settings.py
 
       - name: Add blog to mysite URLConf

@@ -4,7 +4,7 @@ from django.test import TestCase
 
 
 # Create your tests here.
-class ReactionModelTests(TestCase):
+class ReactionTests(TestCase):
     """Reaction model tests"""
 
     pass
