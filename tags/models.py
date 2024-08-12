@@ -22,7 +22,7 @@ class Tag(models.Model):
     description = models.CharField(
         max_length=256,
         db_index=True,
-        help_text="Topic Description",
+        help_text="Tag Description",
     )
     updated_at = models.DateTimeField(
         auto_now=True,

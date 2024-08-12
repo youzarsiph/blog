@@ -21,6 +21,14 @@ Clone the repo:
 git clone https://github.com/youzarsiph/blog
 ```
 
+If you have `make` on your system, you can use the `Makefile` to setup the project:
+
+```bash
+make setup
+```
+
+This command installs the dependencies, creates a project, configures the settings and runs migrations, checks and tests. You may need to configure `DRF` and `django-cors-headers` settings.
+
 Install dependencies:
 
 ```bash
@@ -31,8 +39,8 @@ Create a new project:
 
 ```bash
 python -m django startproject mysite
-cd mysite
 mv -r blog mysite/blog
+cd mysite
 ```
 
 Use `blog`'s custom User model, in `mysite/settings.py`:
@@ -102,21 +110,13 @@ Run migrations:
 python manage.py migrate
 ```
 
-Generate an auth token:
-
-```bash
-# Optional create a superuser
-# python manage.py createsuperuser
-python manage.py drf_create_token <YOUR_USERNAME>
-```
-
 Run `makerecs` to compute recommendations:
 
 ```bash
 python manage.py runscript makerecs
 ```
 
-Create a file named `.env` and add your [HuggingFace Token](https://huggingface.co), if you want to use the AI services:
+Create a `.env`file and add your [HuggingFace Token](https://huggingface.co), if you want to use the AI services:
 
 ```bash
 HF_TOKEN=<YOUR_TOKEN>
