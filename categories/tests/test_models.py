@@ -1,18 +1,17 @@
-""" Tests for blog.comments.models """
+""" Tests for blog.categories.models """
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from blog.articles.models import Article
 from blog.categories.models import Category
-from blog.comments.models import Comment
 
 
 # Create your tests here.
 User = get_user_model()
 
 
-class CommentTests(TestCase):
-    """Comment model tests"""
+class CategoryTests(TestCase):
+    """Category model tests"""
 
     def setUp(self) -> None:
         """Setup data"""
@@ -29,8 +28,8 @@ class CommentTests(TestCase):
 
         # Article
         article = Article(
-            user=user,
             category=category,
+            user=user,
             title="Test",
             headline="Test headline",
             content="Test content...",
@@ -38,29 +37,9 @@ class CommentTests(TestCase):
         article.save()
         self.article = article
 
-        comment = Comment(
-            user=user,
-            article=article,
-            content="Some comment...",
-        )
-        comment.save()
-        self.comment = comment
-
         return super().setUp()
 
-    def test_comment_count(self):
-        """Test for article.comment_count"""
+    def test_article_count(self):
+        """Test for category.article_count"""
 
-        # Initial count
-        self.assertEqual(self.comment.reply_count, 0)
-
-        # Count after adding a comment
-        comment = Comment(
-            user=self.user,
-            article=self.article,
-            content="Some content...",
-        )
-        comment.save()
-        self.comment.replies.add(comment)
-
-        self.assertEqual(self.comment.reply_count, 1)
+        self.assertEqual(self.category.article_count, 1)

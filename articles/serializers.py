@@ -20,6 +20,7 @@ class ArticleSerializer(ModelSerializer):
             "id",
             "url",
             "user",
+            "category",
             "photo",
             "title",
             "headline",

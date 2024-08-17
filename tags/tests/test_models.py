@@ -3,6 +3,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from blog.articles.models import Article
+from blog.categories.models import Category
 from blog.tags.models import Tag
 
 
@@ -21,9 +22,15 @@ class TagTests(TestCase):
         user.save()
         self.user = user
 
+        # Category
+        category = Category(name="Test", description="Test Category")
+        category.save()
+        self.category = category
+
         # Article
         article = Article(
             user=user,
+            category=category,
             title="Test",
             headline="Test headline",
             content="Test content...",

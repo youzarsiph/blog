@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.serializers import Serializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from blog.recsys.views import ArticleRecSysActions
@@ -25,7 +26,7 @@ class ArticleViewSet(OwnerMixin, ArticleAIActions, ArticleRecSysActions, ModelVi
     serializer_class = ArticleSerializer
     permission_classes = [IsAuthenticated]
     search_fields = ["title", "headline", "content"]
-    filterset_fields = ["user", "is_pinned", "tags"]
+    filterset_fields = ["user", "category", "is_pinned", "tags"]
     ordering_fields = ["title", "created_at", "updated_at"]
 
     def get_serializer_class(self):
@@ -37,6 +38,9 @@ class ArticleViewSet(OwnerMixin, ArticleAIActions, ArticleRecSysActions, ModelVi
 
             case "retrieve":
                 self.serializer_class = ArticleRetrieveSerializer
+
+            case "star":
+                self.serializer_class = Serializer
 
             case _:
                 pass
@@ -73,11 +77,21 @@ class ArticleViewSet(OwnerMixin, ArticleAIActions, ArticleRecSysActions, ModelVi
 
     @action(methods=["post"], detail=True)
     def star(self, request: Request, pk: int) -> Response:
-        """React to an article"""
+        """Star an article"""
 
         message: str
+
         # Get article object
         article = self.get_object()
+
+        # Data validation
+        serializer = self.get_serializer(data=request.POST)
+
+        if not serializer.is_valid():
+            return Response(
+                serializer.error_messages,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         if self.request.user not in article.stargazers.all():
             article.stargazers.add(self.request.user)
@@ -168,6 +182,18 @@ class ArticleViewSet(OwnerMixin, ArticleAIActions, ArticleRecSysActions, ModelVi
 
         # Return the data
         return Response(serializer.data)
+
+
+class CategoryArticlesViewSet(ArticleViewSet):
+    """Articles of a category"""
+
+    filterset_fields = ["user", "is_pinned"]
+    permission_classes = [IsAuthenticated, IsReadOnly, IsListOnly]
+
+    def get_queryset(self):
+        """Filter queryset by tag"""
+
+        return super().get_queryset().filter(category_id=self.kwargs["id"])
 
 
 class TagArticlesViewSet(ArticleViewSet):

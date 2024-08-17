@@ -1,20 +1,20 @@
-""" API endpoints for blog.tags """
+""" API endpoints for blog.categories """
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from blog.permissions import IsListOnly, IsReadOnly
-from blog.tags.models import Tag
-from blog.tags.serializers import TagSerializer, TagRetrieveSerializer
+from blog.categories.models import Category
+from blog.categories.serializers import CategorySerializer, CategoryRetrieveSerializer
 
 
 # Create your views here.
-class TagViewSet(ModelViewSet):
-    """Create, read, update and delete Tags"""
+class CategoryViewSet(ModelViewSet):
+    """Create, read, update and delete Categories"""
 
-    queryset = Tag.objects.all()
-    serializer_class = TagSerializer
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated]
-    filterset_fields = ["name", "color"]
+    filterset_fields = ["name"]
     search_fields = ["name", "description"]
     ordering_fields = ["name", "created_at", "updated_at"]
 
@@ -23,7 +23,7 @@ class TagViewSet(ModelViewSet):
 
         match self.action:
             case "retrieve":
-                self.serializer_class = TagRetrieveSerializer
+                self.serializer_class = CategoryRetrieveSerializer
 
             case _:
                 pass
@@ -39,8 +39,8 @@ class TagViewSet(ModelViewSet):
         return super().get_permissions()
 
 
-class ArticleTagsViewSet(TagViewSet):
-    """Tags of an article"""
+class ArticleCategoriesViewSet(CategoryViewSet):
+    """Categories of an article"""
 
     permission_classes = [IsAuthenticated, IsReadOnly, IsListOnly]
 

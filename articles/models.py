@@ -15,7 +15,13 @@ class Article(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name="articles",
-        help_text="Article Owner",
+        help_text="Article owner",
+    )
+    category = models.ForeignKey(
+        "categories.Category",
+        on_delete=models.CASCADE,
+        related_name="articles",
+        help_text="Article category",
     )
     photo = models.ImageField(
         null=True,

@@ -3,6 +3,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from blog.articles.models import Article
+from blog.categories.models import Category
 
 
 # Create your tests here.
@@ -20,6 +21,11 @@ class UserTests(TestCase):
         user.save()
         self.user = user
 
+        # Category
+        category = Category(name="Test", description="Test Category")
+        category.save()
+        self.category = category
+
         return super().setUp()
 
     def test_article_count(self):
@@ -31,6 +37,7 @@ class UserTests(TestCase):
         # Count after adding a article
         article = Article(
             user=self.user,
+            category=self.category,
             title="Test",
             headline="Test headline",
             content="Test content...",
