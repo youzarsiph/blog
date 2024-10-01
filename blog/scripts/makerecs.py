@@ -1,6 +1,7 @@
 """ Blog Make Recommendations: A script for computing recommendations using Content Based Filtering algorithm """
 
-import pandas as pd
+# import pandas as pd
+import polars as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from blog.articles.models import Article
@@ -26,33 +27,39 @@ def run() -> None:
         ]
     )
 
-    # Vectorization
-    vectorizer = TfidfVectorizer(stop_words="english")
-    matrix = vectorizer.fit_transform(
-        [
-            f"{a[1]}\n\nDate published: {a[3]}, Last update: {a[4]}\n{a[2]}\n{a[3]}"
-            for a in df.values
-        ]
+    # Compute similar articles
+    similar_articles = cosine_similarity(
+        TfidfVectorizer(stop_words="english").fit_transform(
+            [
+                f"""{a['title']}
+                Date published: {a['created_at']}, Last update: {a['updated_at']}
+                {a['headline']}
+                {a['content']}"""
+                for a in df.to_dicts()
+            ]
+        )
     )
 
-    # Compute similar articles
-    similar_articles = cosine_similarity(matrix)
-
     # Add recommendations to data-frame
+    # df["recommendations"] = [
+    #     df["id"].loc[x.argsort()[-5:-1]].tolist() for x in similar_articles
+    # ]
+
+    df.with_columns(recommendations=pd.col("id"))
+
     df["recommendations"] = [
-        df["id"].loc[x.argsort()[-5:-1]].tolist() for x in similar_articles
+        df["id"].fil[x.argsort()[-5:-1]].to_list() for x in similar_articles
     ]
 
     # Add recommendations to database
-    for a in df[["id", "recommendations"]].values:
+    for a in df[["id", "recommendations"]].to_dicts():
         # Get article
-        article = Article.objects.get(id=a[0])
+        article = Article.objects.get(id=a["id"])
 
         # Clear recommendations
         article.recommendations.clear()
 
         # Add recommended articles
-        for a in a[1]:
-            article.recommendations.add(a)
+        article.recommendations.add(*a["recommendations"])
 
     print("All Done")

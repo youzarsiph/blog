@@ -11,7 +11,7 @@ lint:
 setup:
     # Install dependencies
     python -m pip install --upgrade pip
-    pip install -r blog/requirements.txt
+    pip install -r requirements.txt
 
     # Create django project
     python -m django startproject mysite

@@ -1,4 +1,4 @@
-name: Ruff Lint
+name: Ruff
 
 on: [push]
 
@@ -12,11 +12,5 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install ruff
-
       - name: Analyzing the code with Ruff
-        run: |
-          python -m ruff check $(git ls-files '*.py')
+        run: make lint

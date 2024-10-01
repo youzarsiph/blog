@@ -12,6 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
           
@@ -24,20 +25,15 @@ jobs:
         run: |
           python -m django startproject mysite
 
-      - name: Copy blog to mysite
-        run: |
-          cd mysite
-          git clone https://github.com/youzarsiph/blog
+      - name: Add blog to django project
+        run: mv blog mysite
+          
 
-      - name: Add blog to INSTALLED_APPS
+      - name: Setup blog
         run: |
           cd mysite
           echo "INSTALLED_APPS += ['blog', 'blog.ai', 'blog.articles', 'blog.comments', 'blog.followers', 'blog.reactions', 'blog.recsys', 'blog.reports', 'blog.tags', 'blog.users', 'rest_framework']" >> mysite/settings.py
           echo "AUTH_USER_MODEL = 'users.User'" >> mysite/settings.py
-
-      - name: Add blog to mysite URLConf
-        run: |
-          cd mysite
           echo "from django.urls import include" >> mysite/urls.py
           echo "urlpatterns += [path('', include('blog.urls'))]" >> mysite/urls.py
 
@@ -46,7 +42,7 @@ jobs:
           cd mysite
           python manage.py migrate
 
-      - name: Run Check
+      - name: Run Checks
         run: |
           cd mysite
           python manage.py check
