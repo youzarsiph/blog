@@ -1,4 +1,15 @@
-""" Data Models for blog.categories """
+"""
+Category model
+
+Fields:
+- name: Category name
+- description: str
+- updated_at: datetime
+- created_at: datetime
+
+Methods:
+- article_count: Number of articles of a category
+"""
 
 from django.db import models
 

@@ -1,4 +1,12 @@
-""" Data Models for blog.followers """
+"""
+Follower model
+
+Fields:
+- form_user: Follower
+- to_user: Followed
+- updated_at: Last update
+- created_at: Date followed
+"""
 
 from django.db import models
 from django.contrib.auth import get_user_model

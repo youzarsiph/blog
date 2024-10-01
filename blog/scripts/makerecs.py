@@ -1,6 +1,5 @@
-""" Blog Make Recommendations: A script for computing recommendations using Content Based Filtering algorithm """
+""" Script for computing recommendations using Content Based Filtering algorithm """
 
-# import pandas as pd
 import polars as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity

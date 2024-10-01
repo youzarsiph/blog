@@ -1,4 +1,13 @@
-""" Data Models for blog.tags """
+"""
+Tag model
+
+Fields:
+- name: Tag name
+- color: Tag color
+- description: Tag description
+- updated_at: Last update
+- created_at: Date created
+"""
 
 from django.db import models
 

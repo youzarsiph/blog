@@ -1,4 +1,32 @@
-""" Data Models for blog.articles """
+"""
+Article model
+
+Fields:
+- user: Article owner
+- category: Article category
+- photo: Article photo
+- title: Article title
+- headline: Article headline
+- extras: Article extra data like summary etc...
+- content: Article content
+- is_pinned: Designates if the Article is pinned
+- comments: Article comments
+- reactions: Article reactions
+- recommendations: Similar articles
+- stargazers: Article stargazers
+- reports: Article reports
+- tags: Article tags
+- updated_at: Last update
+- created_at: Date published
+
+Methods:
+- comment_count: Number of comments of an article
+- reaction_count: Number of reactions of an article
+- star_count: Number of stargazers of an article
+- report_count: Number of reports of an article
+- recommendation_count: Number of recommendations of an article
+- tag_count: Number of tags of an article
+"""
 
 from django.db import models
 from django.contrib.auth import get_user_model

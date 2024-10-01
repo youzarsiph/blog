@@ -1,4 +1,15 @@
-""" Data Models for blog.reports """
+"""
+Report model
+
+Fields:
+- user: Report owner
+- article: Reported article
+- is_approved: Designates if the abuse report is correct
+- message: Message that will help us understand and handle the situation
+- reason: Report reason
+- updated_at: Last update
+- created_at: Date published
+"""
 
 from django.db import models
 from django.contrib.auth import get_user_model

@@ -1,4 +1,13 @@
-""" Data Models for blog.reactions """
+"""
+Reaction model
+
+Fields:
+- user: Reaction owner
+- article: Article reacted to
+- emoji: Reaction emoji
+- updated_at: Last update
+- created_at: Date reacted
+"""
 
 from django.db import models
 from django.contrib.auth import get_user_model

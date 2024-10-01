@@ -1,4 +1,18 @@
-""" Data Models for blog.comments """
+"""
+Comment model
+
+Fields:
+- user: Comment owner
+- article: Comment article
+- content: Comment content
+- extras: Comment extra data like summary etc...
+- replies: Comment replies
+- updated_at: Last update
+- created_at: Date published
+
+Methods:
+- reply_count: Number of replies to this comment
+"""
 
 from django.db import models
 from django.contrib.auth import get_user_model
@@ -9,7 +23,7 @@ User = get_user_model()
 
 
 class Comment(models.Model):
-    """Comments"""
+    """Article Comments"""
 
     user = models.ForeignKey(
         User,
