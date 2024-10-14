@@ -123,7 +123,7 @@ class ArticleViewSet(OwnerMixin, ArticleAIActions, ArticleRecSysActions, ModelVi
 
     @action(methods=["get"], detail=False)
     def trending(self, request: Request) -> Response:
-        """Starred articles"""
+        """Trending articles"""
 
         # Get queryset and filter
         queryset = self.filter_queryset(self.get_queryset()).filter(

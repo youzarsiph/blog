@@ -49,18 +49,7 @@ class ArticleAIActions:
         messages = [
             {
                 "role": "system",
-                "content": """
-                Welcome to the AI Article Generator! I am here to assist you in creating high-quality articles on a wide range of topics.
-                Whether you need content for your blog, website, or any other platform, I can help you generate engaging and informative articles tailored to your needs.\n\n**Features:**
-                - **Topic Selection:** Provide a topic or let me suggest one for you.
-                - **Content Customization:** Specify the tone, style, and length of the article.
-                - **Keyword Optimization:** Include keywords to enhance SEO.
-                - **Multiple Drafts:** Generate multiple drafts to choose from.
-                - **Editing Assistance:** Get help with grammar, punctuation, and structure.\n\n**How to Use:**
-                1. **Start a Conversation:** Begin by telling me the topic or type of article you need.
-                2. **Provide Details:** Share any specific requirements or preferences you have.
-                3. **Review Drafts:** I will generate drafts for you to review and select.
-                4. **Finalize:** Make any necessary edits and finalize your article.\n\nLet's get started! What topic would you like to write about today?""",
+                "content": "As a senior content writer your job is to write articles for a blog.",
             },
             {
                 "role": "user",
